@@ -1,210 +1,230 @@
-const {
-    defineConfig,
-} = require("eslint/config");
+const { defineConfig } = require("eslint/config");
+
+const airbnbExtended = require("eslint-config-airbnb-extended/legacy");
 
 const tsParser = require("@typescript-eslint/parser");
 
-const {
-    fixupConfigRules,
-    fixupPluginRules,
-} = require("@eslint/compat");
+const { fixupConfigRules, fixupPluginRules } = require("@eslint/compat");
 
 const globals = require("globals");
-const _import = require("eslint-plugin-import");
-const react = require("eslint-plugin-react");
 const reactHooks = require("eslint-plugin-react-hooks");
 const typescriptEslint = require("@typescript-eslint/eslint-plugin");
 const js = require("@eslint/js");
 
-const {
-    FlatCompat,
-} = require("@eslint/eslintrc");
+const { FlatCompat } = require("@eslint/eslintrc");
 
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-module.exports = defineConfig([{
+module.exports = defineConfig([
+  airbnbExtended.configs.react.recommended,
+  airbnbExtended.configs.react.hooks,
+  {
     languageOptions: {
-        parser: tsParser,
+      parser: tsParser,
 
-        globals: {
-            ...globals.browser,
-            ...globals.commonjs,
-            ...globals.node,
-            ...globals.jest,
-            React: true,
-            JSX: true,
+      globals: {
+        ...globals.browser,
+        ...globals.commonjs,
+        ...globals.node,
+        ...globals.jest,
+        React: true,
+        JSX: true,
+      },
+
+      ecmaVersion: 2021,
+      sourceType: "module",
+
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+          tsx: true,
         },
-
-        ecmaVersion: 2021,
-        sourceType: "module",
-
-        parserOptions: {
-            ecmaFeatures: {
-                jsx: true,
-                tsx: true,
-            },
-        },
+      },
     },
 
-    extends: fixupConfigRules(compat.extends(
+    extends: fixupConfigRules(
+      compat.extends(
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "airbnb",
-        "airbnb/hooks",
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:import/recommended",
-        "plugin:jsx-a11y/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:prettier/recommended",
-    )),
+        "plugin:prettier/recommended"
+      )
+    ),
 
     settings: {
-        react: {
-            version: "detect",
-        },
+      react: {
+        version: "detect",
+      },
 
-        "import/parser": {
-            "@typescript-eslint/parser": [".ts", ".tsx"],
-        },
+      "import/parser": {
+        "@typescript-eslint/parser": [".ts", ".tsx"],
+      },
 
-        "import/resolver": {
-            typescript: {
-                alwaysTryTypes: true,
-            },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
         },
-    },
-
-    plugins: {
-        import: fixupPluginRules(_import),
-        react: fixupPluginRules(react),
-        "react-hooks": fixupPluginRules(reactHooks),
-        "@typescript-eslint": fixupPluginRules(typescriptEslint),
+      },
     },
 
     rules: {
-        "react/jsx-filename-extension": ["error", {
-            extensions: [".js", ".jsx", ".tsx"],
-        }],
+      "react/jsx-filename-extension": [
+        "error",
+        {
+          extensions: [".js", ".jsx", ".tsx"],
+        },
+      ],
 
-        "react/prop-types": "off",
+      "react/prop-types": "off",
 
-        "react/jsx-props-no-spreading": ["error", {
-            html: "ignore",
-        }],
+      "react/jsx-props-no-spreading": [
+        "error",
+        {
+          html: "ignore",
+        },
+      ],
 
-        "max-len": ["error", 120],
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "@typescript-eslint/no-explicit-any": "error",
-        "no-unused-vars": "off",
+      "max-len": ["error", 120],
+      "no-use-before-define": "off",
+      "@typescript-eslint/no-use-before-define": ["error"],
+      "@typescript-eslint/no-explicit-any": "error",
+      "no-unused-vars": "off",
 
-        "@typescript-eslint/no-unused-vars": ["error", {
-            varsIgnorePattern: "^_",
-            argsIgnorePattern: "^_",
-        }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+        },
+      ],
 
-        "@typescript-eslint/naming-convention": ["error", {
-            selector: "interface",
-            format: ["PascalCase"],
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "interface",
+          format: ["PascalCase"],
 
-            custom: {
-                regex: "^I[A-Z][a-z]",
-                match: false,
-            },
-        }],
+          custom: {
+            regex: "^I[A-Z][a-z]",
+            match: false,
+          },
+        },
+      ],
 
-        "react/react-in-jsx-scope": "off",
-        "explicit-module-boundary-types": "off",
-        "arrow-body-style": "off",
+      "react/react-in-jsx-scope": "off",
+      "explicit-module-boundary-types": "off",
+      "arrow-body-style": "off",
 
-        "import/no-unresolved": ["error", {
-            ignore: [".css", ".scss", ".sass"],
-        }],
+      "import/no-unresolved": [
+        "error",
+        {
+          ignore: [".css", ".scss", ".sass"],
+        },
+      ],
 
-        "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/anchor-is-valid": "off",
 
-        "import/order": ["warn", {
-            alphabetize: {
-                order: "asc",
-            },
+      "import/order": [
+        "warn",
+        {
+          alphabetize: {
+            order: "asc",
+          },
 
-            "newlines-between": "always",
-            groups: ["external", "internal", "parent", "index", "sibling"],
-        }],
+          "newlines-between": "always",
+          groups: ["external", "internal", "parent", "index", "sibling"],
+        },
+      ],
 
-        "import/extensions": "off",
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": "error",
-        "no-undef": "off",
-        "react/require-default-props": "off",
+      "import/extensions": "off",
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": "error",
+      "no-undef": "off",
+      "react/require-default-props": "off",
 
-        "react/function-component-definition": ["error", {
-            namedComponents: "arrow-function",
-            unnamedComponents: "arrow-function",
-        }],
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "arrow-function",
+          unnamedComponents: "arrow-function",
+        },
+      ],
 
-        "react/jsx-fragments": ["error", "syntax"],
-        "padding-line-between-statements": "off",
-        "no-loss-of-precision": "off",
+      "react/jsx-fragments": ["error", "syntax"],
+      "padding-line-between-statements": "off",
+      "no-loss-of-precision": "off",
 
-        "@/padding-line-between-statements": ["error", {
-            blankLine: "always",
-            prev: "*",
-            next: ["const", "let", "export"],
-        }, {
-            blankLine: "always",
-            prev: ["const", "let", "export"],
-            next: "*",
-        }, {
-            blankLine: "any",
-            prev: ["const", "let", "export"],
-            next: ["const", "let", "export"],
-        }, {
-            blankLine: "always",
-            prev: "*",
+      "@/padding-line-between-statements": [
+        "error",
+        {
+          blankLine: "always",
+          prev: "*",
+          next: ["const", "let", "export"],
+        },
+        {
+          blankLine: "always",
+          prev: ["const", "let", "export"],
+          next: "*",
+        },
+        {
+          blankLine: "any",
+          prev: ["const", "let", "export"],
+          next: ["const", "let", "export"],
+        },
+        {
+          blankLine: "always",
+          prev: "*",
 
-            next: [
-                "if",
-                "class",
-                "for",
-                "do",
-                "while",
-                "switch",
-                "try",
-                "default",
-            ],
-        }, {
-            blankLine: "always",
-            prev: ["if", "class", "for", "do", "while", "switch", "try"],
-            next: "*",
-        }, {
-            blankLine: "always",
-            prev: "*",
-            next: "return",
-        }, {
-            blankLine: "never",
-            prev: ["case"],
-            next: ["case"],
-        }, {
-            blankLine: "always",
-            prev: ["block-like"],
-            next: ["case"],
-        }, {
-            blankLine: "always",
-            prev: ["block-like", "expression"],
-            next: ["break"],
-        }],
+          next: [
+            "if",
+            "class",
+            "for",
+            "do",
+            "while",
+            "switch",
+            "try",
+            "default",
+          ],
+        },
+        {
+          blankLine: "always",
+          prev: ["if", "class", "for", "do", "while", "switch", "try"],
+          next: "*",
+        },
+        {
+          blankLine: "always",
+          prev: "*",
+          next: "return",
+        },
+        {
+          blankLine: "never",
+          prev: ["case"],
+          next: ["case"],
+        },
+        {
+          blankLine: "always",
+          prev: ["block-like"],
+          next: ["case"],
+        },
+        {
+          blankLine: "always",
+          prev: ["block-like", "expression"],
+          next: ["break"],
+        },
+      ],
 
-        "@typescript-eslint/member-ordering": ["error", {
-            interfaces: {
-                memberTypes: ["field", "signature", "method"],
-                order: "alphabetically",
-            },
-        }],
+      "@typescript-eslint/member-ordering": [
+        "error",
+        {
+          interfaces: {
+            memberTypes: ["field", "signature", "method"],
+            order: "alphabetically",
+          },
+        },
+      ],
     },
-}]);
+  },
+]);
