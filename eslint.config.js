@@ -152,7 +152,7 @@ module.exports = defineConfig([{
         "padding-line-between-statements": "off",
         "no-loss-of-precision": "off",
 
-        "@typescript-eslint/padding-line-between-statements": ["error", {
+        "@/padding-line-between-statements": ["error", {
             blankLine: "always",
             prev: "*",
             next: ["const", "let", "export"],
@@ -177,11 +177,10 @@ module.exports = defineConfig([{
                 "switch",
                 "try",
                 "default",
-                "interface",
             ],
         }, {
             blankLine: "always",
-            prev: ["if", "class", "for", "do", "while", "switch", "try", "interface"],
+            prev: ["if", "class", "for", "do", "while", "switch", "try"],
             next: "*",
         }, {
             blankLine: "always",
