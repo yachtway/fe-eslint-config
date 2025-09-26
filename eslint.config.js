@@ -1,28 +1,30 @@
-const { defineConfig } = require("eslint/config");
+import {defineConfig} from "eslint/config";
 
-const airbnbExtended = require("eslint-config-airbnb-extended/legacy");
+import airbnbExtended from "eslint-config-airbnb-extended/legacy";
 
-const tsParser = require("@typescript-eslint/parser");
+import tsParser from "@typescript-eslint/parser";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import tseslint from 'typescript-eslint';
+import js from "@eslint/js";
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-const { fixupConfigRules, fixupPluginRules } = require("@eslint/compat");
+import react from "eslint-plugin-react";
 
-const globals = require("globals");
-const reactHooks = require("eslint-plugin-react-hooks");
-const typescriptEslint = require("@typescript-eslint/eslint-plugin");
-const js = require("@eslint/js");
 
-const { FlatCompat } = require("@eslint/eslintrc");
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-module.exports = defineConfig([
+export default defineConfig([
+  js.configs.recommended,
+  js.configs.all,
   airbnbExtended.configs.react.recommended,
   airbnbExtended.configs.react.hooks,
+  eslintPluginPrettierRecommended,
+  react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
+  tseslint.configs.recommended,
   {
+    plugins: {
+      react,
+    },
     languageOptions: {
       parser: tsParser,
 
@@ -45,14 +47,6 @@ module.exports = defineConfig([
         },
       },
     },
-
-    extends: fixupConfigRules(
-      compat.extends(
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
-      )
-    ),
 
     settings: {
       react: {
