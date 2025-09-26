@@ -1,3 +1,3 @@
-const eslintrc = require("./eslint.config.js");
+import eslintrc from "./eslint.config.js";
 
-module.exports = eslintrc;
+export default eslintrc;
